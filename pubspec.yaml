@@ -1,0 +1,56 @@
+name: cashkeeper
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  percent_indicator: ^4.2.4
+  table_calendar: ^3.1.2
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: "AppIcon"
+  image_path: "assets/logos/icon.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - assets/images/bg.png
+  - assets/images/bg2.png
+  - assets/images/logo_dark.png
+  - assets/images/logo_white.png
+  fonts:
+    - family: Parkinsans
+      fonts:
+        - asset: fonts/Parkinsans-Regular.ttf
+        - asset: fonts/Parkinsans-Bold.ttf
+          weight: 700
+        - asset: fonts/Parkinsans-ExtraBold.ttf
+          weight: 800
+        - asset: fonts/Parkinsans-Light.ttf
+          weight: 300
+        - asset: fonts/Parkinsans-Medium.ttf
+          weight: 500
+        - asset: fonts/Parkinsans-SemiBold.ttf
+          weight: 600
+    - family: Knewave
+      fonts:
+        - asset: fonts/Knewave-Regular.ttf
