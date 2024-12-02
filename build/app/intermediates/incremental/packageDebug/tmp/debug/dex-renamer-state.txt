@@ -1,8 +1,8 @@
-#Sun Dec 01 23:40:07 WET 2024
-base.0=E\:\\GIT-REPOS\\CashKeeper\\cashkeeper\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=E\:\\GIT-REPOS\\CashKeeper\\cashkeeper\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=E\:\\GIT-REPOS\\CashKeeper\\cashkeeper\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.3=E\:\\GIT-REPOS\\CashKeeper\\cashkeeper\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+#Mon Dec 02 10:47:20 WET 2024
+base.0=C\:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.3=C\:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=1/classes.dex

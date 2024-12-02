@@ -4,7 +4,7 @@
             "outputFile": "com.example.cashkeeper.app-mergeDebugResources-24:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "E:\\GIT-REPOS\\CashKeeper\\cashkeeper\\CashKeeper\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
