@@ -1,5 +1,6 @@
 import 'package:cashkeeper/pages/details/widgets/month.dart';
 import 'package:cashkeeper/pages/details/widgets/week.dart';
+import 'package:cashkeeper/utils/globals.dart';
 import 'package:flutter/material.dart';
 
 class Dates extends StatefulWidget {
@@ -29,6 +30,7 @@ class _DatesState extends State<Dates> {
                       onPressed: () {
                         setState(() {
                           isMonthSelected = true;
+                          isWeekSelected.value = false;
                         });
                       },
                       style: OutlinedButton.styleFrom(
@@ -40,6 +42,7 @@ class _DatesState extends State<Dates> {
                       onPressed: () {
                         setState(() {
                           isMonthSelected = true;
+                          isWeekSelected.value = false;
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -53,6 +56,8 @@ class _DatesState extends State<Dates> {
                       onPressed: () {
                         setState(() {
                           isMonthSelected = false;
+                          isWeekSelected.value = true;
+                          
                         });
                       },
                       style: OutlinedButton.styleFrom(
@@ -64,6 +69,7 @@ class _DatesState extends State<Dates> {
                       onPressed: () {
                         setState(() {
                           isMonthSelected = false;
+                          isWeekSelected.value = true;
                         });
                       },
                       style: ElevatedButton.styleFrom(

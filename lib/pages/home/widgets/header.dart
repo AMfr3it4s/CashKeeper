@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -9,7 +10,35 @@ class AppHeader extends StatefulWidget {
 }
 
 class _AppHeaderState extends State<AppHeader> {
-  bool _isTabOpen = false; 
+  bool _isTabOpen = false;
+  double metaMensal = 0.0;
+  double metaAnual = 0.0;
+  double receitaMensal = 0.0;
+  double receitaAnual = 0.0;
+
+  @override
+  void initState() 
+  {
+    super.initState();
+    carregarValores();
+
+  }
+
+  Future<void> carregarValores() async 
+  {
+    final DatabaseHelper db = DatabaseHelper();
+    double metaMensal = await db.obterMetaMensal();
+    double metaAnual = await db.obterMetaAnual();
+    double receitaMensal = await db.obterValorMensal();
+    double receitaAnual = await db.obterValorAnual();
+    setState(() {
+      metaMensal = metaMensal;
+      metaAnual = metaAnual;
+      receitaMensal = receitaMensal;
+      receitaAnual = receitaAnual;
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +144,7 @@ class _AppHeaderState extends State<AppHeader> {
                           ),
                         ),
                         Text(
-                          "€ 6.000", // Este valor será dinâmico
+                          "€ $receitaMensal", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -129,7 +158,7 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 100,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: 0.123,
+                          percent: (receitaMensal/metaMensal).clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
                           progressColor: Color(0xff00dda3),
                           barRadius: Radius.circular(2),
@@ -149,7 +178,7 @@ class _AppHeaderState extends State<AppHeader> {
                           ),
                         ),
                         Text(
-                          "€ 20.000", // Este valor será dinâmico
+                          "€ $receitaAnual", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -163,7 +192,7 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 150,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: 0.8,
+                          percent: (receitaAnual/metaAnual).clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
                           progressColor: Color(0xff00dda3),
                           barRadius: Radius.circular(2),
@@ -222,10 +251,10 @@ class _AppHeaderState extends State<AppHeader> {
                             const SizedBox(width: 5),
                             GestureDetector(
                               onTap: () {
-                                _showMetaAnualDialog(context);
+                                _showMetaDialog(context);
                               },
                               child: Text(
-                              "Meta Mensal",
+                              "Definir Metas",
                                 style: TextStyle(
                                 fontSize: 14,
                                 color: Color(0xff33404f),
@@ -236,30 +265,6 @@ class _AppHeaderState extends State<AppHeader> {
                           ]
                         ),
                         
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children:[ 
-                            Icon(
-                              Icons.ads_click_rounded,
-                              color: Color(0xff33404f)
-                              ),
-                            const SizedBox(width: 5),
-                            GestureDetector(
-                              onTap: () {
-                                _showMetaAnualDialog(context);
-                              },
-                              child: Text(
-                              "Meta Anual",
-                                style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
-                                ),
-                              ),
-                            ),
-                          ]
-                        ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -346,34 +351,14 @@ class BottomCurveClipper extends CustomClipper<Path> {
   }
 }
 
-// Função para exibir o pop-up de Meta Mensal
-void _showMetaMensalDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Meta Mensal"),
-        content: Text("Aqui você pode configurar sua meta mensal."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Fechar"),
-          ),
-        ],
-      );
-    },
-  );
-}
 
 // Função para exibir o pop-up de Meta Anual
-void _showMetaAnualDialog(BuildContext context) {
+void _showMetaDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Meta Anual"),
+        title: Text("Definir Metas"),
         content: Text("Aqui você pode configurar sua meta anual."),
         actions: [
           TextButton(
