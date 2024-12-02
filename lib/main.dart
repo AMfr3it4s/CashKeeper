@@ -45,7 +45,6 @@ class _MyAppState extends State<MyApp> {
         '/': (context) => HomePage(),
         '/details': (context) => DetailsPage(),
         '/random': (context) => RandomPage(),
-
       },
       initialRoute: '/',
       );

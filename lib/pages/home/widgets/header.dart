@@ -1,5 +1,6 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AppHeader extends StatefulWidget {
@@ -11,10 +12,12 @@ class AppHeader extends StatefulWidget {
 
 class _AppHeaderState extends State<AppHeader> {
   bool _isTabOpen = false;
-  double metaMensal = 0.0;
-  double metaAnual = 0.0;
-  double receitaMensal = 0.0;
-  double receitaAnual = 0.0;
+  double _receitaMensal = 0.0;
+  double _receitaAnual = 0.0;
+  double _percentAnual = 0.0;
+  double _percentMensal = 0.0;
+ 
+  
 
   @override
   void initState() 
@@ -32,10 +35,10 @@ class _AppHeaderState extends State<AppHeader> {
     double receitaMensal = await db.obterValorMensal();
     double receitaAnual = await db.obterValorAnual();
     setState(() {
-      metaMensal = metaMensal;
-      metaAnual = metaAnual;
-      receitaMensal = receitaMensal;
-      receitaAnual = receitaAnual;
+      _receitaMensal = receitaMensal;
+      _receitaAnual = receitaAnual;
+      _percentAnual = (receitaAnual/metaAnual);
+      _percentMensal = (receitaMensal/metaMensal);
     });
 
   }
@@ -144,7 +147,7 @@ class _AppHeaderState extends State<AppHeader> {
                           ),
                         ),
                         Text(
-                          "€ $receitaMensal", // Este valor será dinâmico
+                          "€ $_receitaMensal", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -158,7 +161,7 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 100,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: (receitaMensal/metaMensal).clamp(0.0, 1.0),
+                          percent: _percentMensal.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
                           progressColor: Color(0xff00dda3),
                           barRadius: Radius.circular(2),
@@ -178,7 +181,7 @@ class _AppHeaderState extends State<AppHeader> {
                           ),
                         ),
                         Text(
-                          "€ $receitaAnual", // Este valor será dinâmico
+                          "€ $_receitaAnual", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -192,7 +195,7 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 150,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: (receitaAnual/metaAnual).clamp(0.0, 1.0),
+                          percent: _percentAnual.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
                           progressColor: Color(0xff00dda3),
                           barRadius: Radius.circular(2),
@@ -354,12 +357,74 @@ class BottomCurveClipper extends CustomClipper<Path> {
 
 // Função para exibir o pop-up de Meta Anual
 void _showMetaDialog(BuildContext context) {
+   final TextEditingController controller1 = TextEditingController();
+   final TextEditingController controller2 = TextEditingController();
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Definir Metas"),
-        content: Text("Aqui você pode configurar sua meta anual."),
+        content: SizedBox(
+          height: 300,
+          width: 300,
+          child: Column(
+            children: [
+              Text("Meta Mensal"),
+              const SizedBox(height: 5),
+              TextField(
+                controller: controller1,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: false,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "Digite a Meta Mensal",
+                  border: OutlineInputBorder(),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text("Meta Anual"),
+              const SizedBox(height: 5),
+              TextField(
+                controller: controller2,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: false,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "Digite a Meta Anual",
+                  border: OutlineInputBorder(),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                ],
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  final inputValue1 = controller1.text;
+                  final inputValue2 = controller2.text;
+                  final DatabaseHelper databaseHelper = DatabaseHelper();
+                  if (inputValue1.isNotEmpty && inputValue2.isNotEmpty) {
+                    databaseHelper.atualizarMetas(double.parse(inputValue2), double.parse(inputValue1));
+                    controller1.clear();
+                    controller2.clear();
+                  } else {
+                    print("Por favor, insira um número.");
+                  }
+                  },
+                  style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff33404f),
+                  foregroundColor: Color(0xff33404f).withOpacity(0.7)
+                  ),
+                  child: const Text("Submit", style: TextStyle(color: Colors.white)),
+                  ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {

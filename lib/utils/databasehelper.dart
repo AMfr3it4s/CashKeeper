@@ -46,17 +46,6 @@ class DatabaseHelper {
     return _database!;
   }
 
-  // Função para inserir dados na tabela 'registo'
-  Future<void> inserirRegisto(double valor, int ano, int mes, int dia) async {
-    final db = await getDatabase();
-
-    await db.insert(
-      'registo',
-      {'valor': valor, 'ano': ano, 'mes': mes, 'dia': dia},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
   // Função para inserir dados na tabela 'metas'
   Future<void> inserirMetas(double metaAnual, double metaMensal) async {
     final db = await getDatabase();
@@ -185,4 +174,77 @@ class DatabaseHelper {
         ? resultado[0]['meta_anual'] as double
         : 0.0;
   }
+
+Future<void> inserirRegistoComDataAtual(double valor) async {
+  final db = await getDatabase();
+
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
+
+  // Extrai o ano, mês e dia da data atual
+  int ano = agora.year;
+  int mes = agora.month;
+  int dia = agora.day;
+
+  // Verifica se já existe um registro para essa data
+  final existingRecords = await db.query(
+    'registo',
+    where: 'ano = ? AND mes = ? AND dia = ?',
+    whereArgs: [ano, mes, dia],
+  );
+
+  if (existingRecords.isEmpty) {
+    // Se não houver registro para o dia, insere um novo
+    await db.insert(
+      'registo',
+      {'valor': valor, 'ano': ano, 'mes': mes, 'dia': dia},
+      conflictAlgorithm: ConflictAlgorithm.ignore, // Evita substituir se já existir
+    );
+  } else {
+    // Se houver registro para o dia, atualiza o valor
+    await db.update(
+      'registo',
+      {'valor': valor},
+      where: 'ano = ? AND mes = ? AND dia = ?',
+      whereArgs: [ano, mes, dia],
+    );
+  }
+}
+
+// Função para atualizar o valor de um registo com base na data atual
+Future<void> atualizarRegistoComDataAtual(double novoValor) async {
+  final db = await getDatabase();
+
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
+
+  // Extrai o ano, mês e dia da data atual
+  int ano = agora.year;
+  int mes = agora.month;
+  int dia = agora.day;
+
+  // Atualiza o valor na tabela 'registo' para o registro com a data atual
+  await db.update(
+    'registo',
+    {'valor': novoValor},  // Atualiza o valor
+    where: 'ano = ? AND mes = ? AND dia = ?',  // Condição para encontrar o registro
+    whereArgs: [ano, mes, dia],  // Argumentos para a condição
+  );
+}
+
+// Função para atualizar as metas anuais e mensais
+Future<void> atualizarMetas(double metaAnual, double metaMensal) async {
+  final db = await getDatabase();
+
+  // Insere a nova meta ou atualiza caso já exista
+  await db.insert(
+    'metas',
+    {'id': 1, 'meta_anual': metaAnual, 'meta_mensal': metaMensal}, // Novo valor das metas
+    conflictAlgorithm: ConflictAlgorithm.replace, // Substitui os valores caso o 'id' já exista
+  );
+}
+
+
+
+
 }

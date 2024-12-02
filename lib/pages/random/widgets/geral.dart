@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -140,7 +141,10 @@ class _GeralState extends State<Geral> {
                         ElevatedButton(
                           onPressed: () {
                             final inputValue = _controller.text;
+                            final DatabaseHelper databaseHelper = DatabaseHelper();
                             if (inputValue.isNotEmpty) {
+                              databaseHelper.inserirRegistoComDataAtual(double.parse(inputValue));
+                              _controller.clear();
                               print("Valor submetido: $inputValue");
                             } else {
                               print("Por favor, insira um número.");
@@ -191,7 +195,10 @@ class _GeralState extends State<Geral> {
                         ElevatedButton(
                           onPressed: () {
                             final inputValue = _controller.text;
+                            final DatabaseHelper databaseHelper = DatabaseHelper();
                             if (inputValue.isNotEmpty) {
+                              databaseHelper.atualizarRegistoComDataAtual(double.parse(inputValue));
+                              _controller.clear();
                               print("Valor submetido: $inputValue");
                             } else {
                               print("Por favor, insira um número.");
