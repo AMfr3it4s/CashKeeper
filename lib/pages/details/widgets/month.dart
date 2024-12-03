@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/bar_chart.dart';
 import 'package:flutter/material.dart';
 
 class Months extends StatelessWidget {
@@ -7,10 +8,7 @@ class Months extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          color: Colors.red,
-          child: Center(child: Text("Conteúdo Mes")),
-        ),
+        BarChart()
       ],
     );
   }

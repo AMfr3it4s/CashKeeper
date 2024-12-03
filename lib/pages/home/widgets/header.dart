@@ -1,4 +1,7 @@
+import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class AppHeader extends StatefulWidget {
@@ -9,7 +12,37 @@ class AppHeader extends StatefulWidget {
 }
 
 class _AppHeaderState extends State<AppHeader> {
-  bool _isTabOpen = false; 
+  bool _isTabOpen = false;
+  double _receitaMensal = 0.0;
+  double _receitaAnual = 0.0;
+  double _percentAnual = 0.0;
+  double _percentMensal = 0.0;
+ 
+  
+
+  @override
+  void initState() 
+  {
+    super.initState();
+    carregarValores();
+
+  }
+
+  Future<void> carregarValores() async 
+  {
+    final DatabaseHelper db = DatabaseHelper();
+    double metaMensal = await db.obterMetaMensal();
+    double metaAnual = await db.obterMetaAnual();
+    double receitaMensal = await db.obterValorMensal();
+    double receitaAnual = await db.obterValorAnual();
+    setState(() {
+      _receitaMensal = receitaMensal;
+      _receitaAnual = receitaAnual;
+      _percentAnual = (receitaAnual/metaAnual);
+      _percentMensal = (receitaMensal/metaMensal);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +85,9 @@ class _AppHeaderState extends State<AppHeader> {
                       "CashKeeper",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                       ),
                     ),
                     // Espaço flexível
@@ -67,7 +100,7 @@ class _AppHeaderState extends State<AppHeader> {
                         });
                       },
                       icon: Icon(Icons.menu_rounded),
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                     ),
                   ],
                 ),
@@ -77,10 +110,10 @@ class _AppHeaderState extends State<AppHeader> {
                   child: Text(
                     "Olá, Junior!",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 40,
-                      fontFamily: 'Knewave',
+                      fontFamily: AppFonts.scondaryFont,
                     ),
                   ),
                 ),
@@ -91,9 +124,9 @@ class _AppHeaderState extends State<AppHeader> {
                     "Resumo",
                     style: TextStyle(
                       fontSize: 30,
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Knewave',
+                      fontFamily: AppFonts.scondaryFont,
                     ),
                   ),
                 ),
@@ -110,17 +143,17 @@ class _AppHeaderState extends State<AppHeader> {
                           "Total Mês",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                            fontFamily: 'Parkinsans',
+                            color: AppColors.primaryColor.withOpacity(0.8),
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         Text(
-                          "€ 6.000", // Este valor será dinâmico
+                          "€ $_receitaMensal", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -129,9 +162,9 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 100,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: 0.123,
+                          percent: _percentMensal.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
-                          progressColor: Color(0xff00dda3),
+                          progressColor: AppColors.tertiaryColor,
                           barRadius: Radius.circular(2),
                         ),
                       ],
@@ -144,17 +177,17 @@ class _AppHeaderState extends State<AppHeader> {
                           "Total Anual",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                            fontFamily: 'Parkinsans',
+                            color: AppColors.primaryColor.withOpacity(0.8),
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         Text(
-                          "€ 20.000", // Este valor será dinâmico
+                          "€ $_receitaAnual", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -163,9 +196,9 @@ class _AppHeaderState extends State<AppHeader> {
                           width: 150,
                           animation: true,
                           lineHeight: 6.0,
-                          percent: 0.8,
+                          percent: _percentAnual.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
-                          progressColor: Color(0xff00dda3),
+                          progressColor: AppColors.tertiaryColor,
                           barRadius: Radius.circular(2),
                         ),
                       ],
@@ -188,7 +221,7 @@ class _AppHeaderState extends State<AppHeader> {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width / 2.5, 
-                color: Colors.white,
+                color: AppColors.primaryColor,
                 child: Column(
                   children: [
                     // Conteúdo da tab
@@ -206,7 +239,7 @@ class _AppHeaderState extends State<AppHeader> {
                               });
                               },
                               icon: Icon(Icons.menu_rounded),
-                              color: Color(0xff33404f),
+                              color: AppColors.secondaryColor,
                             ),
                           ],
                         
@@ -217,19 +250,19 @@ class _AppHeaderState extends State<AppHeader> {
                           children:[ 
                             Icon(
                               Icons.ads_click_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
                               onTap: () {
-                                _showMetaAnualDialog(context);
+                                _showMetaDialog(context);
                               },
                               child: Text(
-                              "Meta Mensal",
+                              "Definir Metas",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -241,32 +274,8 @@ class _AppHeaderState extends State<AppHeader> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[ 
                             Icon(
-                              Icons.ads_click_rounded,
-                              color: Color(0xff33404f)
-                              ),
-                            const SizedBox(width: 5),
-                            GestureDetector(
-                              onTap: () {
-                                _showMetaAnualDialog(context);
-                              },
-                              child: Text(
-                              "Meta Anual",
-                                style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
-                                ),
-                              ),
-                            ),
-                          ]
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children:[ 
-                            Icon(
                               Icons.notifications_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -277,8 +286,8 @@ class _AppHeaderState extends State<AppHeader> {
                               "Notificações",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -290,7 +299,7 @@ class _AppHeaderState extends State<AppHeader> {
                           children:[ 
                             Icon(
                               Icons.settings_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -302,8 +311,8 @@ class _AppHeaderState extends State<AppHeader> {
                               "Definições",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -346,35 +355,77 @@ class BottomCurveClipper extends CustomClipper<Path> {
   }
 }
 
-// Função para exibir o pop-up de Meta Mensal
-void _showMetaMensalDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Meta Mensal"),
-        content: Text("Aqui você pode configurar sua meta mensal."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Fechar"),
-          ),
-        ],
-      );
-    },
-  );
-}
 
 // Função para exibir o pop-up de Meta Anual
-void _showMetaAnualDialog(BuildContext context) {
+void _showMetaDialog(BuildContext context) {
+   final TextEditingController controller1 = TextEditingController();
+   final TextEditingController controller2 = TextEditingController();
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Meta Anual"),
-        content: Text("Aqui você pode configurar sua meta anual."),
+        title: Text("Definir Metas"),
+        content: SizedBox(
+          height: 300,
+          width: 300,
+          child: Column(
+            children: [
+              Text("Meta Mensal"),
+              const SizedBox(height: 5),
+              TextField(
+                controller: controller1,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: false,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "Digite a Meta Mensal",
+                  border: OutlineInputBorder(),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text("Meta Anual"),
+              const SizedBox(height: 5),
+              TextField(
+                controller: controller2,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: false,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "Digite a Meta Anual",
+                  border: OutlineInputBorder(),
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                ],
+              ),
+              const SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () {
+                  final inputValue1 = controller1.text;
+                  final inputValue2 = controller2.text;
+                  final DatabaseHelper databaseHelper = DatabaseHelper();
+                  if (inputValue1.isNotEmpty && inputValue2.isNotEmpty) {
+                    databaseHelper.atualizarMetas(double.parse(inputValue2), double.parse(inputValue1));
+                    controller1.clear();
+                    controller2.clear();
+                  } else {
+                    print("Por favor, insira um número.");
+                  }
+                  },
+                  style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondaryColor,
+                  foregroundColor: AppColors.secondaryColor.withOpacity(0.7)
+                  ),
+                  child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor)),
+                  ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {

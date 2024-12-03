@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
@@ -7,11 +8,11 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 130,
+      height: 90,
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 24.0),
             child: Column(
               children: [
                 Row(
@@ -29,15 +30,15 @@ class Header extends StatelessWidget {
                       "CashKeeper",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Color(0xff33404f),
+                        color: AppColors.secondaryColor,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                       ),
                     ),
                     // Espaço flexível
                     Spacer(),
                     // Ícone à direita
-                    Icon(Icons.apple_rounded, color: Color(0xff33404f)),
+                    Icon(Icons.apple_rounded, color: AppColors.secondaryColor),
                   ],
                 ),
               ],

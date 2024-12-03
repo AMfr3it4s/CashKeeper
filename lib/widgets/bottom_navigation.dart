@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatelessWidget {
@@ -11,7 +12,7 @@ class BottomNavigation extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 90,
-      color: Color(0xFF33404f),
+      color: AppColors.secondaryColor,
       child: IconTheme(
         data: const IconThemeData(
           color: Color(0xfff8f8f8), //Normal Color
@@ -26,7 +27,7 @@ class BottomNavigation extends StatelessWidget {
               child: Icon(
                 Icons.home_work_rounded,
                 size: 30,
-                color: currentRoute == '/' ? Color(0xff00dda3) : Color(0xfff8f8f8),
+                color: currentRoute == '/' ? AppColors.tertiaryColor : Color(0xfff8f8f8),
               ),
             ),
             GestureDetector(
@@ -36,7 +37,7 @@ class BottomNavigation extends StatelessWidget {
               child: Icon(
                 Icons.menu_book_rounded,
                 size: 30,
-                color: currentRoute == '/details' ? Color(0xff00dda3) : Color(0xfff8f8f8),
+                color: currentRoute == '/details' ? AppColors.tertiaryColor : Color(0xfff8f8f8),
               ),
             ),
             GestureDetector(
@@ -46,7 +47,7 @@ class BottomNavigation extends StatelessWidget {
               child: Icon(
                 Icons.app_registration_outlined,
                 size: 30,
-                color: currentRoute == '/random' ? Color(0xff00dda3) : Color(0xfff8f8f8),
+                color: currentRoute == '/random' ? AppColors.tertiaryColor : Color(0xfff8f8f8),
               ),
             ),
           ],
