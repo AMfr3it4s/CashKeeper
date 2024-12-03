@@ -11,7 +11,6 @@ class ChartColumnWeek extends StatefulWidget {
 }
 
 class _ChartColumnWeekState extends State<ChartColumnWeek> {
-  double _metaMensal = 0.0;
   double _dom = 0.0;
   double _seg = 0.0;
   double _ter = 0.0;
@@ -31,7 +30,6 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
   Future<void> carregarValores () async 
   {
     final DatabaseHelper databaseHelper = DatabaseHelper();
-    double metaMensal = await databaseHelper.obterMetaMensal();
     List<Map<String, dynamic>> valoresSemanaMap = await databaseHelper.obterValoresSemana();
 
      List<double> valoresSemana = valoresSemanaMap.map((mapa) {
@@ -39,7 +37,6 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
   }).toList();
 
     setState(() {
-      _metaMensal = metaMensal;
       _dom = valoresSemana[0];
       _seg = valoresSemana[1];
       _ter = valoresSemana[2];
