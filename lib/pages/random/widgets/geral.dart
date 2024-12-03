@@ -1,4 +1,5 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,9 +30,9 @@ class _GeralState extends State<Geral> {
                   "Geral",
                   style: TextStyle(
                     fontSize: 25,
-                    color: Color(0xff33404f),
+                    color: AppColors.secondaryColor,
                     fontWeight: FontWeight.w400,
-                    fontFamily: 'Knewave',
+                    fontFamily: AppFonts.scondaryFont,
                   ),
                 ),
                 const SizedBox(width: 3),
@@ -39,9 +40,9 @@ class _GeralState extends State<Geral> {
                   "- Entrada Diária de Receita",
                   style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xff33404f),
+                    color: AppColors.secondaryColor,
                     fontWeight: FontWeight.w400,
-                    fontFamily: 'Knewave',
+                    fontFamily: AppFonts.scondaryFont,
                   ),
                 )
                 ]),
@@ -60,9 +61,9 @@ class _GeralState extends State<Geral> {
                         });
                       },
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Color(0xff00dda3), width: 2),
+                        side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Adicionar', style: TextStyle(color: Color(0xff00dda3))),
+                      child: Text('Adicionar', style: TextStyle(color: AppColors.tertiaryColor)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -72,9 +73,9 @@ class _GeralState extends State<Geral> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff33404f),
+                        backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Adicionar', style: TextStyle(color: Colors.white)),
+                      child: Text('Adicionar', style: TextStyle(color: AppColors.primaryColor)),
                     ),
               // Botão "Semana"
               !isMonthSelected
@@ -87,9 +88,9 @@ class _GeralState extends State<Geral> {
                         });
                       },
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Color(0xff00dda3), width: 2),
+                        side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Atualizar', style: TextStyle(color: Color(0xff00dda3))),
+                      child: Text('Atualizar', style: TextStyle(color: AppColors.tertiaryColor)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -99,9 +100,9 @@ class _GeralState extends State<Geral> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff33404f),
+                        backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Atualizar', style: TextStyle(color: Colors.white)),
+                      child: Text('Atualizar', style: TextStyle(color: AppColors.primaryColor)),
                     ),
             ],
           ),
@@ -151,10 +152,10 @@ class _GeralState extends State<Geral> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff33404f),
-                            foregroundColor: Color(0xff33404f).withOpacity(0.7)
+                            backgroundColor: AppColors.secondaryColor,
+                            foregroundColor: AppColors.secondaryColor.withOpacity(0.7)
                           ),
-                          child: const Text("Submit", style: TextStyle(color: Colors.white)),
+                          child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor)),
                         ),
                       ],
                     ),
@@ -205,10 +206,10 @@ class _GeralState extends State<Geral> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff33404f),
-                            foregroundColor: Color(0xff33404f).withOpacity(0.7),
+                            backgroundColor: AppColors.secondaryColor,
+                            foregroundColor: AppColors.secondaryColor.withOpacity(0.7),
                           ),
-                          child: const Text("Submit", style: TextStyle(color: Colors.white),),
+                          child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor),),
                         ),
                       ],
                     ),

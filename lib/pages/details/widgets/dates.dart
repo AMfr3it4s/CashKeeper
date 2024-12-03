@@ -1,6 +1,7 @@
 import 'package:cashkeeper/pages/details/widgets/month.dart';
 import 'package:cashkeeper/pages/details/widgets/week.dart';
 import 'package:cashkeeper/utils/globals.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 
 class Dates extends StatefulWidget {
@@ -20,7 +21,7 @@ class _DatesState extends State<Dates> {
         Container(
           width: double.infinity,
           height: 80,
-          color: Colors.white,
+          color: AppColors.primaryColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -34,9 +35,9 @@ class _DatesState extends State<Dates> {
                         });
                       },
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Color(0xff00dda3), width: 2),
+                        side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Mês', style: TextStyle(color: Color(0xff00dda3))),
+                      child: Text('Mês', style: TextStyle(color: AppColors.tertiaryColor)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -46,9 +47,9 @@ class _DatesState extends State<Dates> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff33404f),
+                        backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Mês', style: TextStyle(color: Colors.white)),
+                      child: Text('Mês', style: TextStyle(color: AppColors.primaryColor)),
                     ),
               // Botão "Semana"
               !isMonthSelected
@@ -61,9 +62,9 @@ class _DatesState extends State<Dates> {
                         });
                       },
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Color(0xff00dda3), width: 2),
+                        side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Semana', style: TextStyle(color: Color(0xff00dda3))),
+                      child: Text('Semana', style: TextStyle(color: AppColors.tertiaryColor)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -73,9 +74,9 @@ class _DatesState extends State<Dates> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff33404f),
+                        backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Semana', style: TextStyle(color: Colors.white)),
+                      child: Text('Semana', style: TextStyle(color: AppColors.primaryColor)),
                     ),
             ],
           ),

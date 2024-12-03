@@ -1,4 +1,5 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -84,9 +85,9 @@ class _AppHeaderState extends State<AppHeader> {
                       "CashKeeper",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                       ),
                     ),
                     // Espaço flexível
@@ -99,7 +100,7 @@ class _AppHeaderState extends State<AppHeader> {
                         });
                       },
                       icon: Icon(Icons.menu_rounded),
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                     ),
                   ],
                 ),
@@ -109,10 +110,10 @@ class _AppHeaderState extends State<AppHeader> {
                   child: Text(
                     "Olá, Junior!",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 40,
-                      fontFamily: 'Knewave',
+                      fontFamily: AppFonts.scondaryFont,
                     ),
                   ),
                 ),
@@ -123,9 +124,9 @@ class _AppHeaderState extends State<AppHeader> {
                     "Resumo",
                     style: TextStyle(
                       fontSize: 30,
-                      color: Colors.white,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Knewave',
+                      fontFamily: AppFonts.scondaryFont,
                     ),
                   ),
                 ),
@@ -142,17 +143,17 @@ class _AppHeaderState extends State<AppHeader> {
                           "Total Mês",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                            fontFamily: 'Parkinsans',
+                            color: AppColors.primaryColor.withOpacity(0.8),
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         Text(
                           "€ $_receitaMensal", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -163,7 +164,7 @@ class _AppHeaderState extends State<AppHeader> {
                           lineHeight: 6.0,
                           percent: _percentMensal.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
-                          progressColor: Color(0xff00dda3),
+                          progressColor: AppColors.tertiaryColor,
                           barRadius: Radius.circular(2),
                         ),
                       ],
@@ -176,17 +177,17 @@ class _AppHeaderState extends State<AppHeader> {
                           "Total Anual",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                            fontFamily: 'Parkinsans',
+                            color: AppColors.primaryColor.withOpacity(0.8),
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         Text(
                           "€ $_receitaAnual", // Este valor será dinâmico
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -197,7 +198,7 @@ class _AppHeaderState extends State<AppHeader> {
                           lineHeight: 6.0,
                           percent: _percentAnual.clamp(0.0, 1.0),
                           backgroundColor: Colors.grey,
-                          progressColor: Color(0xff00dda3),
+                          progressColor: AppColors.tertiaryColor,
                           barRadius: Radius.circular(2),
                         ),
                       ],
@@ -220,7 +221,7 @@ class _AppHeaderState extends State<AppHeader> {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width / 2.5, 
-                color: Colors.white,
+                color: AppColors.primaryColor,
                 child: Column(
                   children: [
                     // Conteúdo da tab
@@ -238,7 +239,7 @@ class _AppHeaderState extends State<AppHeader> {
                               });
                               },
                               icon: Icon(Icons.menu_rounded),
-                              color: Color(0xff33404f),
+                              color: AppColors.secondaryColor,
                             ),
                           ],
                         
@@ -249,7 +250,7 @@ class _AppHeaderState extends State<AppHeader> {
                           children:[ 
                             Icon(
                               Icons.ads_click_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -260,8 +261,8 @@ class _AppHeaderState extends State<AppHeader> {
                               "Definir Metas",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -274,7 +275,7 @@ class _AppHeaderState extends State<AppHeader> {
                           children:[ 
                             Icon(
                               Icons.notifications_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -285,8 +286,8 @@ class _AppHeaderState extends State<AppHeader> {
                               "Notificações",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -298,7 +299,7 @@ class _AppHeaderState extends State<AppHeader> {
                           children:[ 
                             Icon(
                               Icons.settings_rounded,
-                              color: Color(0xff33404f)
+                              color: AppColors.secondaryColor
                               ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -310,8 +311,8 @@ class _AppHeaderState extends State<AppHeader> {
                               "Definições",
                                 style: TextStyle(
                                 fontSize: 14,
-                                color: Color(0xff33404f),
-                                fontFamily: 'Parkinsans',
+                                color: AppColors.secondaryColor,
+                                fontFamily: AppFonts.primaryFont,
                                 ),
                               ),
                             ),
@@ -417,10 +418,10 @@ void _showMetaDialog(BuildContext context) {
                   }
                   },
                   style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff33404f),
-                  foregroundColor: Color(0xff33404f).withOpacity(0.7)
+                  backgroundColor: AppColors.secondaryColor,
+                  foregroundColor: AppColors.secondaryColor.withOpacity(0.7)
                   ),
-                  child: const Text("Submit", style: TextStyle(color: Colors.white)),
+                  child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor)),
                   ),
             ],
           ),

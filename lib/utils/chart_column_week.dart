@@ -1,4 +1,5 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -69,8 +70,8 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
+      color: AppColors.primaryColor,
+      surfaceTintColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -86,7 +87,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
                       "Receitas",
                       style: TextStyle(
                         fontSize: 20,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -95,7 +96,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -113,7 +114,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
                   width: 27,
                   height: 13,
                   decoration: BoxDecoration(
-                    color: Color(0xff33404f),
+                    color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -122,7 +123,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
                   "Receitas",
                   style: TextStyle(
                     fontSize: 12,
-                    fontFamily: 'Parkinsans',
+                    fontFamily: AppFonts.primaryFont,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -145,7 +146,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
               primaryYAxis: NumericAxis(
                 isVisible: false,
                 minimum: 0,
-                maximum: _metaMensal * 2,
+                maximum: 700,
                 interval: 100,
               ),
               series: <CartesianSeries>[
@@ -156,7 +157,7 @@ class _ChartColumnWeekState extends State<ChartColumnWeek> {
                   ),
                   dataSource: _getChartData(),
                   width: 0.5,
-                  color: Color(0xff33404f),
+                  color: AppColors.secondaryColor,
                   xValueMapper: (ChartColumnData data, _) => data.x,
                   yValueMapper: (ChartColumnData data, _) => data.y,
                   dataLabelSettings: DataLabelSettings(

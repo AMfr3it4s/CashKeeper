@@ -1,5 +1,6 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:cashkeeper/utils/globals.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
@@ -48,7 +49,7 @@ class _HeaderState extends State<Header> {
     return Container(
       width: double.infinity,
       height: 400,
-      color: Colors.white,
+      color: AppColors.primaryColor,
       child: Stack(
         children: [
           // ClipPath para aplicar a curva na parte inferior
@@ -83,9 +84,9 @@ class _HeaderState extends State<Header> {
                       "CashKeeper",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                       ),
                     ),
                   ],
@@ -101,7 +102,7 @@ class _HeaderState extends State<Header> {
               width: 200,
               height: 200,
               decoration: BoxDecoration(
-                color: Color(0xff00dda3),
+                color: AppColors.tertiaryColor,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -116,9 +117,9 @@ class _HeaderState extends State<Header> {
                           "Total",
                           style: TextStyle(
                             fontSize: 25,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -126,9 +127,9 @@ class _HeaderState extends State<Header> {
                           value ? "Semana" : "Mês",
                           style: TextStyle(
                             fontSize: 25,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -136,9 +137,9 @@ class _HeaderState extends State<Header> {
                           value ? "€ $_receitaSemanal" : "€ $_receitaMensal",
                           style: TextStyle(
                             fontSize: 25,
-                            color: Colors.white,
+                            color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Parkinsans',
+                            fontFamily: AppFonts.primaryFont,
                           ),
                         ),
                       ],

@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cashkeeper/utils/databasehelper.dart';
 
@@ -35,9 +36,9 @@ class _ActivityState extends State<Activity> {
               "Atividades",
               style: TextStyle(
                 fontSize: 25,
-                color: Color(0xff33404f),
+                color: AppColors.secondaryColor,
                 fontWeight: FontWeight.w400,
-                fontFamily: 'Knewave',
+                fontFamily: AppFonts.scondaryFont,
               ),
             ),
           ),
@@ -64,7 +65,7 @@ class _ActivityState extends State<Activity> {
                     return ListTile(
                       leading: Icon(
                         isPositive ? Icons.file_upload_outlined : Icons.file_download_outlined,
-                        color: isPositive ? const Color(0xff00dda3) : const Color(0xff33404f),
+                        color: isPositive ?  AppColors.tertiaryColor :  AppColors.secondaryColor,
                       ),
                       title: Text(
                         activity['descricao'],
@@ -81,7 +82,7 @@ class _ActivityState extends State<Activity> {
                         '${isPositive ? '+' : ''}${activity['valor']} €',
                         style: TextStyle(
                           fontSize: 16,
-                          color: isPositive ? const Color(0xff00dda3) : const Color(0xff33404f),
+                          color: isPositive ?  AppColors.tertiaryColor :  AppColors.secondaryColor,
                         ),
                       ),
                     );

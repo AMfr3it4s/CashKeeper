@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -28,9 +29,9 @@ class _CalendarPageState extends State<CalendarPage> {
                     "Calendar",
                     style: TextStyle(
                       fontSize: 25,
-                      color: Color(0xff33404f),
+                      color: AppColors.secondaryColor,
                       fontWeight: FontWeight.w400,
-                      fontFamily: 'Knewave',
+                      fontFamily: AppFonts.scondaryFont,
                     ),
                   ),
                 ),
@@ -49,7 +50,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     return Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Color(0xff33404f), 
+                        color: AppColors.secondaryColor, 
                         shape: BoxShape.circle,
                       ),
                       width: 40,
@@ -57,7 +58,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: Text(
                         '${date.day}',
                         style: TextStyle(
-                          color: Colors.white, 
+                          color: AppColors.primaryColor, 
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -69,13 +70,13 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Color(0xff33404f).withOpacity(0.7),
+                          color: AppColors.secondaryColor.withOpacity(0.7),
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '${date.day}',
                           style: TextStyle(
-                            color: Colors.white, 
+                            color: AppColors.primaryColor, 
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:cashkeeper/utils/libs/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -83,8 +84,8 @@ class _ChartColumnState extends State<ChartColumn> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
+      color: AppColors.primaryColor,
+      surfaceTintColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -100,7 +101,7 @@ class _ChartColumnState extends State<ChartColumn> {
                       "Receitas",
                       style: TextStyle(
                         fontSize: 20,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -109,7 +110,7 @@ class _ChartColumnState extends State<ChartColumn> {
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
-                        fontFamily: 'Parkinsans',
+                        fontFamily: AppFonts.primaryFont,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -127,7 +128,7 @@ class _ChartColumnState extends State<ChartColumn> {
                   width: 27,
                   height: 13,
                   decoration: BoxDecoration(
-                    color: const Color(0xff00dda3),
+                    color: AppColors.tertiaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -136,7 +137,7 @@ class _ChartColumnState extends State<ChartColumn> {
                   "Receitas",
                   style: TextStyle(
                     fontSize: 12,
-                    fontFamily: 'Parkinsans',
+                    fontFamily: AppFonts.primaryFont,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -170,7 +171,7 @@ class _ChartColumnState extends State<ChartColumn> {
                   ),
                   dataSource: _getChartData(),
                   width: 0.5,
-                  color: const Color(0xff00dda3),
+                  color: AppColors.tertiaryColor,
                   xValueMapper: (ChartColumnData data, _) => data.x,
                   yValueMapper: (ChartColumnData data, _) => data.y,
                   dataLabelSettings: DataLabelSettings(
