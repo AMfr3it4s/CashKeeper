@@ -1,3 +1,4 @@
+import 'package:cashkeeper/utils/chart_column_week.dart';
 import 'package:flutter/material.dart';
 
 class Weeks extends StatelessWidget {
@@ -5,13 +6,17 @@ class Weeks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          color: Colors.yellow,
-          child: Center(child: Text("Conteúdo Semanal")),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              ChartColumnWeek()
+            ],
+          )
         ),
-      ],
+      ),
     );
   }
 }

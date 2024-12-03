@@ -402,7 +402,7 @@ void _showMetaDialog(BuildContext context) {
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
                   final inputValue1 = controller1.text;

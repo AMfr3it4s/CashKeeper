@@ -4,7 +4,11 @@ import 'package:path_provider/path_provider.dart';
 
 // Classe para gerenciar o banco de dados
 class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
   Database? _database;
+
+  factory DatabaseHelper() => _instance;
+  DatabaseHelper._internal();
 
   // Função para inicializar o banco de dados
   Future<Database> getDatabase() async {
@@ -40,6 +44,15 @@ class DatabaseHelper {
             meta_mensal REAL
           )
         ''');
+        //Actividades
+        await db.execute('''
+          CREATE TABLE atividades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            descricao TEXT NOT NULL,
+            valor REAL,
+            data TEXT NOT NULL
+          )
+        ''');
       },
     );
 
@@ -69,27 +82,27 @@ class DatabaseHelper {
     return await db.query('metas');
   }
 
-  // Função para obter o valor total mensal
-  Future<double> obterValorMensal() async {
-    final db = await getDatabase();
+ // Função para obter o valor total mensal
+Future<double> obterValorMensal() async {
+  final db = await getDatabase();
 
-    // Obtém o mês e o ano atual
-    final DateTime now = DateTime.now();
-    final int anoAtual = now.year;
-    final int mesAtual = now.month;
+  // Obtém o mês e o ano atual
+  final DateTime now = DateTime.now();
+  final int anoAtual = now.year;
+  final int mesAtual = now.month;
 
-    // Consulta SQL para somar os valores dos dias do mês atual
-    final List<Map<String, dynamic>> resultado = await db.rawQuery('''
-      SELECT SUM(valor) AS valorMensal
-      FROM registo
-      WHERE ano = ? AND mes = ?
-    ''', [anoAtual, mesAtual]);
+  // Consulta SQL para somar os valores dos dias do mês atual
+  final List<Map<String, dynamic>> resultado = await db.rawQuery('''
+    SELECT SUM(valor) AS valorMensal
+    FROM registo
+    WHERE ano = ? AND mes = ?
+  ''', [anoAtual, mesAtual]);
 
-    // Se houver resultado, retorna a soma ou 0 caso não haja
-    return resultado.isNotEmpty && resultado[0]['valorMensal'] != null
-        ? resultado[0]['valorMensal'] as double
-        : 0.0;
-  }
+  // Retorna a soma ou 0 caso não haja valores
+  return resultado.isNotEmpty && resultado[0]['valorMensal'] != null
+      ? resultado[0]['valorMensal'] as double
+      : 0.0;
+}
 
   // Função para obter o valor total anual
   Future<double> obterValorAnual() async {
@@ -113,41 +126,32 @@ class DatabaseHelper {
   }
 
   // Função para obter o valor total semanal
-  Future<double> obterValorSemanal() async {
-    final db = await getDatabase();
+Future<double> obterValorSemanal() async {
+  final db = await getDatabase();
 
-    // Obtém a data atual
-    final DateTime agora = DateTime.now();
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
 
-    // Calcula o primeiro dia (domingo) e o último dia (sábado) da semana atual
-    final DateTime primeiroDiaSemana = agora.subtract(Duration(days: agora.weekday % 7));
-    final DateTime ultimoDiaSemana = primeiroDiaSemana.add(Duration(days: 6));
+  // Calcula o primeiro dia (domingo) e o último dia (sábado) da semana atual
+  final DateTime primeiroDiaSemana = agora.subtract(Duration(days: agora.weekday % 7));
+  final DateTime ultimoDiaSemana = primeiroDiaSemana.add(Duration(days: 6));
 
-    // Obtém o ano, mês, dia do primeiro e do último dia da semana
-    final int anoInicioSemana = primeiroDiaSemana.year;
-    final int mesInicioSemana = primeiroDiaSemana.month;
-    final int diaInicioSemana = primeiroDiaSemana.day;
+  // Consulta SQL para somar os valores dos dias da semana atual
+  final List<Map<String, dynamic>> resultado = await db.rawQuery('''
+    SELECT SUM(valor) AS valorSemanal
+    FROM registo
+    WHERE (ano = ? AND mes = ? AND dia >= ?)
+       OR (ano = ? AND mes = ? AND dia <= ?)
+  ''', [
+    primeiroDiaSemana.year, primeiroDiaSemana.month, primeiroDiaSemana.day, // Início
+    ultimoDiaSemana.year, ultimoDiaSemana.month, ultimoDiaSemana.day,       // Fim
+  ]);
 
-    final int anoFimSemana = ultimoDiaSemana.year;
-    final int mesFimSemana = ultimoDiaSemana.month;
-    final int diaFimSemana = ultimoDiaSemana.day;
-
-    // Consulta SQL para somar os valores dos dias da semana atual
-    final List<Map<String, dynamic>> resultado = await db.rawQuery('''
-      SELECT SUM(valor) AS valorSemanal
-      FROM registo
-      WHERE (ano = ? AND mes = ? AND dia >= ?)
-      OR (ano = ? AND mes = ? AND dia <= ?)
-    ''', [
-      anoInicioSemana, mesInicioSemana, diaInicioSemana, // Para o primeiro dia da semana
-      anoFimSemana, mesFimSemana, diaFimSemana, // Para o último dia da semana
-    ]);
-
-    // Se houver resultado, retorna a soma ou 0 caso não haja
-    return resultado.isNotEmpty && resultado[0]['valorSemanal'] != null
-        ? resultado[0]['valorSemanal'] as double
-        : 0.0;
-  }
+  // Retorna a soma ou 0 caso não haja valores
+  return resultado.isNotEmpty && resultado[0]['valorSemanal'] != null
+      ? resultado[0]['valorSemanal'] as double
+      : 0.0;
+}
 
   // Função para obter o valor da meta mensal
   Future<double> obterMetaMensal() async {
@@ -180,36 +184,35 @@ Future<void> inserirRegistoComDataAtual(double valor) async {
 
   // Obtém a data atual
   final DateTime agora = DateTime.now();
+  String dateTimeString = agora.toString();
 
   // Extrai o ano, mês e dia da data atual
-  int ano = agora.year;
-  int mes = agora.month;
-  int dia = agora.day;
+  final int anoAtual = agora.year;
+  final int mesAtual = agora.month;
+  final int diaAtual = agora.day;
 
   // Verifica se já existe um registro para essa data
-  final existingRecords = await db.query(
+  final List<Map<String, dynamic>> registrosExistentes = await db.query(
     'registo',
     where: 'ano = ? AND mes = ? AND dia = ?',
-    whereArgs: [ano, mes, dia],
+    whereArgs: [anoAtual, mesAtual, diaAtual],
   );
 
-  if (existingRecords.isEmpty) {
+  if (registrosExistentes.isNotEmpty) {
+      return;
+  } else {
     // Se não houver registro para o dia, insere um novo
     await db.insert(
       'registo',
-      {'valor': valor, 'ano': ano, 'mes': mes, 'dia': dia},
-      conflictAlgorithm: ConflictAlgorithm.ignore, // Evita substituir se já existir
+      {'valor': valor, 'ano': anoAtual, 'mes': mesAtual, 'dia': diaAtual},
     );
-  } else {
-    // Se houver registro para o dia, atualiza o valor
-    await db.update(
-      'registo',
-      {'valor': valor},
-      where: 'ano = ? AND mes = ? AND dia = ?',
-      whereArgs: [ano, mes, dia],
+    await db.insert(
+      'atividades',
+      {'descricao': 'Adicionar Receita', 'valor': valor, 'data': dateTimeString}
     );
   }
 }
+
 
 // Função para atualizar o valor de um registo com base na data atual
 Future<void> atualizarRegistoComDataAtual(double novoValor) async {
@@ -217,6 +220,7 @@ Future<void> atualizarRegistoComDataAtual(double novoValor) async {
 
   // Obtém a data atual
   final DateTime agora = DateTime.now();
+  String dateTimeString = agora.toString();
 
   // Extrai o ano, mês e dia da data atual
   int ano = agora.year;
@@ -230,6 +234,10 @@ Future<void> atualizarRegistoComDataAtual(double novoValor) async {
     where: 'ano = ? AND mes = ? AND dia = ?',  // Condição para encontrar o registro
     whereArgs: [ano, mes, dia],  // Argumentos para a condição
   );
+  await db.insert(
+      'atividades',
+      {'descricao': 'Atualizar Receita', 'valor': novoValor, 'data': dateTimeString}
+    );
 }
 
 // Função para atualizar as metas anuais e mensais
@@ -243,6 +251,64 @@ Future<void> atualizarMetas(double metaAnual, double metaMensal) async {
     conflictAlgorithm: ConflictAlgorithm.replace, // Substitui os valores caso o 'id' já exista
   );
 }
+
+// Função para obter a soma dos valores de um mês específico no ano atual
+Future<double> obterSomaDoMes(int mes) async {
+  final db = await getDatabase();
+
+  // Obtém o ano atual
+  final DateTime agora = DateTime.now();
+  final int anoAtual = agora.year;
+
+  // Consulta SQL para somar os valores do mês específico no ano atual
+  final List<Map<String, dynamic>> resultado = await db.rawQuery('''
+    SELECT SUM(valor) AS somaMes
+    FROM registo
+    WHERE ano = ? AND mes = ?
+  ''', [anoAtual, mes]);
+
+  // Retorna o valor da soma ou 0 se não houver registros
+  return resultado.isNotEmpty && resultado[0]['somaMes'] != null
+      ? resultado[0]['somaMes'] as double
+      : 0.0;
+}
+
+Future<List<Map<String, dynamic>>> obterValoresSemana() async {
+  final db = await getDatabase();
+
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
+
+  // Calcula o primeiro dia da semana (domingo) e o último (sábado)
+  final DateTime primeiroDiaSemana = agora.subtract(Duration(days: agora.weekday % 7));
+  final List<DateTime> diasSemana = List.generate(
+    7,
+    (index) => primeiroDiaSemana.add(Duration(days: index)),
+  );
+
+  // Lista para armazenar os valores dos dias da semana
+  List<Map<String, dynamic>> valoresSemana = [];
+
+  for (var dia in diasSemana) {
+    // Busca o valor para o dia específico
+    final List<Map<String, dynamic>> resultado = await db.query(
+      'registo',
+      where: 'ano = ? AND mes = ? AND dia = ?',
+      whereArgs: [dia.year, dia.month, dia.day],
+    );
+
+    // Se houver registro, pega o valor; caso contrário, insere 0
+    valoresSemana.add({
+      'ano': dia.year,
+      'mes': dia.month,
+      'dia': dia.day,
+      'valor': resultado.isNotEmpty ? resultado[0]['valor'] as double : 0.0,
+    });
+  }
+
+  return valoresSemana;
+}
+
 
 
 
