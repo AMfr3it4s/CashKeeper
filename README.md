@@ -1,4 +1,4 @@
-# cashkeeper
+# Cashkeeper
 
 A new Flutter project.
 
