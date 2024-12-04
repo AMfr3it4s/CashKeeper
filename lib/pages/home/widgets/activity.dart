@@ -20,7 +20,7 @@ class _ActivityState extends State<Activity> {
     return await db.query(
       'atividades',
       orderBy: 'id DESC',
-      limit: 5,
+      limit: 10,
     );
   }
 
@@ -49,9 +49,9 @@ class _ActivityState extends State<Activity> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return const Center(child: Text("Erro ao carregar atividades"));
+                  return const Center(child: Text("Erro ao carregar atividades", style: TextStyle(fontFamily: AppFonts.primaryFont)));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text("Nenhuma atividade registrada"));
+                  return const Center(child: Text("Nenhuma atividade registrada" , style: TextStyle(fontFamily: AppFonts.primaryFont)));
                 }
 
                 final activities = snapshot.data!;
@@ -61,17 +61,19 @@ class _ActivityState extends State<Activity> {
                   itemBuilder: (context, index) {
                     final activity = activities[index];
                     final isPositive = activity['descricao'].contains("Adicionar");
+                    final isDeleted = activity['descricao'].contains("Apagado");
 
                     return ListTile(
                       leading: Icon(
-                        isPositive ? Icons.file_upload_outlined : Icons.file_download_outlined,
-                        color: isPositive ?  AppColors.tertiaryColor :  AppColors.secondaryColor,
+                        isPositive && !isDeleted? Icons.file_upload_outlined : !isDeleted? Icons.file_download_outlined : Icons.delete_forever_rounded,
+                        color: isPositive && !isDeleted ?  AppColors.tertiaryColor : !isDeleted? AppColors.secondaryColor : Colors.red,
                       ),
                       title: Text(
                         activity['descricao'],
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
+                          fontFamily: AppFonts.primaryFont
                         ),
                       ),
                       subtitle: Text(
@@ -79,13 +81,16 @@ class _ActivityState extends State<Activity> {
                         style: const TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                       trailing: Text(
-                        '${isPositive ? '+' : ''}${activity['valor']} €',
+                        isDeleted 
+                            ? 'Dados'  
+                            : '${isPositive ? '+' : ''}${activity['valor']} €',  
                         style: TextStyle(
                           fontSize: 16,
-                          color: isPositive ?  AppColors.tertiaryColor :  AppColors.secondaryColor,
+                          color: isPositive ? AppColors.tertiaryColor : AppColors.secondaryColor,
+                          fontFamily: AppFonts.primaryFont,
                         ),
-                      ),
-                    );
+                      )
+                                          );
                   },
                 );
               },

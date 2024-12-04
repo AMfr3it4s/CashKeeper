@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:cashkeeper/utils/libs/constants.dart';
+import 'package:cashkeeper/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,7 +14,27 @@ class Geral extends StatefulWidget {
 
 class _GeralState extends State<Geral> {
   bool isMonthSelected = true;
+  bool _isTodayDataInserted = false;
   final TextEditingController _controller = TextEditingController();
+
+
+  @override
+  void initState() 
+  {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async
+  {
+    final DatabaseHelper db = DatabaseHelper();
+    bool isTodayDataInserted = await db.jaExisteRegistroHoje();
+    _isTodayDataInserted = isTodayDataInserted;
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -63,7 +85,7 @@ class _GeralState extends State<Geral> {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Adicionar', style: TextStyle(color: AppColors.tertiaryColor)),
+                      child: Text('Adicionar', style: TextStyle(color: AppColors.tertiaryColor, fontFamily: AppFonts.primaryFont)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -75,7 +97,7 @@ class _GeralState extends State<Geral> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Adicionar', style: TextStyle(color: AppColors.primaryColor)),
+                      child: Text('Adicionar', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                     ),
               // Botão "Semana"
               !isMonthSelected
@@ -90,7 +112,7 @@ class _GeralState extends State<Geral> {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Atualizar', style: TextStyle(color: AppColors.tertiaryColor)),
+                      child: Text('Atualizar', style: TextStyle(color: AppColors.tertiaryColor, fontFamily: AppFonts.primaryFont)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -102,7 +124,7 @@ class _GeralState extends State<Geral> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Atualizar', style: TextStyle(color: AppColors.primaryColor)),
+                      child: Text('Atualizar', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                     ),
             ],
           ),
@@ -130,6 +152,7 @@ class _GeralState extends State<Geral> {
                             ),
                             decoration: const InputDecoration(
                               hintText: "Digite o valor diário",
+                              hintStyle: TextStyle(fontFamily: AppFonts.primaryFont),
                               border: OutlineInputBorder(),
                             ),
                             inputFormatters: [
@@ -144,18 +167,25 @@ class _GeralState extends State<Geral> {
                             final inputValue = _controller.text;
                             final DatabaseHelper databaseHelper = DatabaseHelper();
                             if (inputValue.isNotEmpty) {
-                              databaseHelper.inserirRegistoComDataAtual(double.parse(inputValue));
+                              if(!_isTodayDataInserted)
+                              {
+                                databaseHelper.inserirRegistoComDataAtual(double.parse(inputValue));
                               _controller.clear();
-                              print("Valor submetido: $inputValue");
+                              SnackbarHelper.showAwesomeSnackbar(context, title:"Sucesso", message: "Valor submetido: $inputValue", duration: 4, contentType: ContentType.success);
+                              }else{
+                                SnackbarHelper.showAwesomeSnackbar(context, title:"Warning", message: "Os dados de Hoje já foram introduzidos, se quiseres podes atualizar no botão ao lado!", duration: 4, contentType: ContentType.warning);
+                                _controller.clear();
+                              }
+                              
                             } else {
-                              print("Por favor, insira um número.");
+                              SnackbarHelper.showAwesomeSnackbar(context, title: "Error", message: "Por favor, insere um número.", duration: 4, contentType: ContentType.failure);
                             }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.secondaryColor,
                             foregroundColor: AppColors.secondaryColor.withOpacity(0.7)
                           ),
-                          child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor)),
+                          child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                         ),
                       ],
                     ),
@@ -200,9 +230,9 @@ class _GeralState extends State<Geral> {
                             if (inputValue.isNotEmpty) {
                               databaseHelper.atualizarRegistoComDataAtual(double.parse(inputValue));
                               _controller.clear();
-                              print("Valor submetido: $inputValue");
+                              SnackbarHelper.showAwesomeSnackbar(context, title: "Success", message: "Valor submetido: $inputValue", duration: 4, contentType: ContentType.success);
                             } else {
-                              print("Por favor, insira um número.");
+                              SnackbarHelper.showAwesomeSnackbar(context, title: "Error", message: "Por favor, insira um número.", duration: 4, contentType: ContentType.failure);
                             }
                           },
                           style: ElevatedButton.styleFrom(

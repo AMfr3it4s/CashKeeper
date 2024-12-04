@@ -309,7 +309,77 @@ Future<List<Map<String, dynamic>>> obterValoresSemana() async {
   return valoresSemana;
 }
 
+Future<bool> jaExisteRegistroHoje() async {
+  final db = await getDatabase();
 
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
+
+  // Extrai o ano, mês e dia da data atual
+  final int anoAtual = agora.year;
+  final int mesAtual = agora.month;
+  final int diaAtual = agora.day;
+
+  // Consulta se existe um registro para hoje
+  final List<Map<String, dynamic>> registrosExistentes = await db.query(
+    'registo',
+    where: 'ano = ? AND mes = ? AND dia = ?',
+    whereArgs: [anoAtual, mesAtual, diaAtual],
+  );
+
+  // Se existirem registros, retorna true, caso contrário retorna false
+  return registrosExistentes.isNotEmpty;
+}
+
+// Função para apagar o registro de hoje
+Future<void> apagarRegistroHoje() async {
+  final db = await getDatabase();
+
+  // Obtém a data atual
+  final DateTime agora = DateTime.now();
+  String dateTimeString = agora.toString();
+
+  // Extrai o ano, mês e dia da data atual
+  final int anoAtual = agora.year;
+  final int mesAtual = agora.month;
+  final int diaAtual = agora.day;
+  
+
+  // Apaga o registro para o dia atual na tabela 'registo'
+  await db.delete(
+    'registo',
+    where: 'ano = ? AND mes = ? AND dia = ?',
+    whereArgs: [anoAtual, mesAtual, diaAtual],
+  );
+
+  // Apaga as atividades relacionadas ao dia atual
+  await db.delete(
+    'atividades',
+    where: 'data LIKE ?',
+    whereArgs: ['%$anoAtual-$mesAtual-$diaAtual%'],
+  );
+
+  await db.insert(
+      'atividades',
+      {'descricao': 'Apagado ', 'valor': 0, 'data': dateTimeString}
+    );
+}
+
+// Função para apagar todos os dados da base de dados
+Future<void> apagarTodosOsDados() async {
+  final db = await getDatabase();
+    final DateTime agora = DateTime.now();
+    String dateTimeString = agora.toString();
+
+  // Apaga todos os registros da tabela 'registo'
+  await db.delete('registo');
+
+  await db.insert(
+      'atividades',
+      {'descricao': 'Apagado ', 'valor': 0, 'data': dateTimeString}
+    );
+
+}
 
 
 

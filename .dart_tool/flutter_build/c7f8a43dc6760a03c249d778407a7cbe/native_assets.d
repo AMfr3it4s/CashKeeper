@@ -1,0 +1,1 @@
+ C:\\Users\\amfre\\Documents\\Software\\Unity\\CashKeeper\\.dart_tool\\flutter_build\\c7f8a43dc6760a03c249d778407a7cbe\\native_assets.yaml: 
