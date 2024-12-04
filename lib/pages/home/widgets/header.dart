@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:cashkeeper/utils/libs/constants.dart';
+import 'package:cashkeeper/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 
 class AppHeader extends StatefulWidget {
   const AppHeader({super.key});
@@ -17,6 +22,9 @@ class _AppHeaderState extends State<AppHeader> {
   double _receitaAnual = 0.0;
   double _percentAnual = 0.0;
   double _percentMensal = 0.0;
+  bool isNotificationsEnabled = false; // Variável para controlar o slider
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
  
   
 
@@ -25,6 +33,7 @@ class _AppHeaderState extends State<AppHeader> {
   {
     super.initState();
     carregarValores();
+
 
   }
 
@@ -43,6 +52,9 @@ class _AppHeaderState extends State<AppHeader> {
     });
 
   }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -263,6 +275,7 @@ class _AppHeaderState extends State<AppHeader> {
                                 fontSize: 14,
                                 color: AppColors.secondaryColor,
                                 fontFamily: AppFonts.primaryFont,
+                                fontWeight: FontWeight.w700
                                 ),
                               ),
                             ),
@@ -288,6 +301,7 @@ class _AppHeaderState extends State<AppHeader> {
                                 fontSize: 14,
                                 color: AppColors.secondaryColor,
                                 fontFamily: AppFonts.primaryFont,
+                                fontWeight: FontWeight.w700
                                 ),
                               ),
                             ),
@@ -313,6 +327,7 @@ class _AppHeaderState extends State<AppHeader> {
                                 fontSize: 14,
                                 color: AppColors.secondaryColor,
                                 fontFamily: AppFonts.primaryFont,
+                                fontWeight: FontWeight.w700
                                 ),
                               ),
                             ),
@@ -364,13 +379,13 @@ void _showMetaDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Definir Metas"),
+        title: Text("Definir Metas", style: TextStyle(fontSize: 18, fontFamily: AppFonts.primaryFont)),
         content: SizedBox(
           height: 300,
           width: 300,
           child: Column(
             children: [
-              Text("Meta Mensal"),
+              Text("Meta Mensal", style: TextStyle(fontFamily: AppFonts.primaryFont)),
               const SizedBox(height: 5),
               TextField(
                 controller: controller1,
@@ -380,6 +395,7 @@ void _showMetaDialog(BuildContext context) {
                 ),
                 decoration: const InputDecoration(
                   hintText: "Digite a Meta Mensal",
+                  hintStyle: TextStyle(fontFamily: AppFonts.primaryFont),
                   border: OutlineInputBorder(),
                 ),
                 inputFormatters: [
@@ -387,7 +403,7 @@ void _showMetaDialog(BuildContext context) {
                 ],
               ),
               const SizedBox(height: 20),
-              Text("Meta Anual"),
+              Text("Meta Anual",style: TextStyle(fontFamily: AppFonts.primaryFont)),
               const SizedBox(height: 5),
               TextField(
                 controller: controller2,
@@ -397,31 +413,41 @@ void _showMetaDialog(BuildContext context) {
                 ),
                 decoration: const InputDecoration(
                   hintText: "Digite a Meta Anual",
+                  hintStyle: TextStyle(fontFamily: AppFonts.primaryFont),
                   border: OutlineInputBorder(),
                 ),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 40),
               ElevatedButton(
                 onPressed: () {
                   final inputValue1 = controller1.text;
                   final inputValue2 = controller2.text;
                   final DatabaseHelper databaseHelper = DatabaseHelper();
                   if (inputValue1.isNotEmpty && inputValue2.isNotEmpty) {
-                    databaseHelper.atualizarMetas(double.parse(inputValue2), double.parse(inputValue1));
-                    controller1.clear();
-                    controller2.clear();
-                  } else {
-                    print("Por favor, insira um número.");
+                      final value1 = double.tryParse(inputValue1);
+                      final value2 = double.tryParse(inputValue2);
+                      if (value1 != null && value1 != 0 && value2 != null && value2 != 0) {
+                      databaseHelper.atualizarMetas(double.parse(inputValue2), double.parse(inputValue1));
+                      controller1.clear();
+                      controller2.clear();
+                      SnackbarHelper.showAwesomeSnackbar(context, title: "Success", message: "Submetidas as Metas", duration: 3, contentType: ContentType.success);
+                      }else {
+                        SnackbarHelper.showAwesomeSnackbar(context, title: "Error", message: "Os valores não podem ser 0 ou inválidos.", duration: 3, contentType: ContentType.failure);
+                      }
                   }
+                  else {
+                    SnackbarHelper.showAwesomeSnackbar(context, title: "Warning", message: "Por favor, insere um número", duration: 3, contentType: ContentType.warning);
+                  }
+                  
                   },
                   style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.secondaryColor,
                   foregroundColor: AppColors.secondaryColor.withOpacity(0.7)
                   ),
-                  child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor)),
+                  child: const Text("Submit", style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                   ),
             ],
           ),
@@ -431,7 +457,7 @@ void _showMetaDialog(BuildContext context) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Fechar"),
+            child: Text("Fechar", style: TextStyle(fontFamily: AppFonts.primaryFont)),
           ),
         ],
       );
@@ -445,14 +471,14 @@ void _showNotificacoesDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Notificações"),
-        content: Text("Aqui você pode configurar suas notificações."),
+        title: Text("Notificações", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+        content: Text("Aqui você pode configurar suas notificações." , style: TextStyle(fontFamily: AppFonts.primaryFont)),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Fechar"),
+            child: Text("Fechar" , style: TextStyle(fontFamily: AppFonts.primaryFont)),
           ),
         ],
       );
@@ -462,18 +488,87 @@ void _showNotificacoesDialog(BuildContext context) {
 
 // Função para exibir o pop-up de Definições
 void _showConfiguracoesDialog(BuildContext context) {
+  final DatabaseHelper db = DatabaseHelper();
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Definições"),
-        content: Text("Aqui você pode ajustar suas configurações."),
+        title: Text("Definições", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+        content: SizedBox(
+          height: 310,
+          width: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.warning_amber_rounded, size: 50, color: Colors.red),
+                  Text(
+                    "Cuidado",
+                    style: TextStyle(fontFamily: AppFonts.primaryFont, color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text("Tudo o que fizeres aqui é irreversível por isso, pensa bem antes de executares uma acção por engano!", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+              const SizedBox(height: 45),
+              ElevatedButton(
+                onPressed: () {
+                  _showConfirmacaoDialog(context, db.apagarRegistroHoje()); 
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                ),
+                child: Text('Eliminar os registos de hoje!', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
+              ),
+              const SizedBox(height: 45),
+              ElevatedButton(
+                onPressed: () {
+                  _showConfirmacaoDialog(context, db.apagarTodosOsDados()); 
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text('Eliminar todos os registos!', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text("Fechar"),
+            child: Text("Fechar", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showConfirmacaoDialog(BuildContext context, Future<void> funcao) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Confirmação", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+        content: Text("Tem a certeza que deseja executar esta ação? Esta ação não pode ser revertida.", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Fecha o diálogo de confirmação
+            },
+            child: Text("Cancelar", style: TextStyle(fontFamily: AppFonts.primaryFont)),
+          ),
+          TextButton(
+            onPressed: () async{
+              await funcao;
+              Navigator.of(context).pop(); // Fecha o diálogo de confirmação
+            },
+            child: Text("Confirmar", style: TextStyle(fontFamily: AppFonts.primaryFont)),
           ),
         ],
       );

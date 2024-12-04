@@ -37,7 +37,7 @@ class _DatesState extends State<Dates> {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Mês', style: TextStyle(color: AppColors.tertiaryColor)),
+                      child: Text('Mês', style: TextStyle(color: AppColors.tertiaryColor, fontFamily: AppFonts.primaryFont)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -49,7 +49,7 @@ class _DatesState extends State<Dates> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Mês', style: TextStyle(color: AppColors.primaryColor)),
+                      child: Text('Mês', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                     ),
               // Botão "Semana"
               !isMonthSelected
@@ -64,7 +64,7 @@ class _DatesState extends State<Dates> {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: AppColors.tertiaryColor, width: 2),
                       ),
-                      child: Text('Semana', style: TextStyle(color: AppColors.tertiaryColor)),
+                      child: Text('Semana', style: TextStyle(color: AppColors.tertiaryColor, fontFamily: AppFonts.primaryFont)),
                     )
                   : ElevatedButton(
                       onPressed: () {
@@ -76,7 +76,7 @@ class _DatesState extends State<Dates> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryColor,
                       ),
-                      child: Text('Semana', style: TextStyle(color: AppColors.primaryColor)),
+                      child: Text('Semana', style: TextStyle(color: AppColors.primaryColor, fontFamily: AppFonts.primaryFont)),
                     ),
             ],
           ),
