@@ -2,11 +2,15 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cashkeeper/utils/databasehelper.dart';
 import 'package:cashkeeper/utils/libs/constants.dart';
+import 'package:cashkeeper/utils/notifications.dart';
 import 'package:cashkeeper/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
+
 
 
 class AppHeader extends StatefulWidget {
@@ -33,6 +37,7 @@ class _AppHeaderState extends State<AppHeader> {
   {
     super.initState();
     carregarValores();
+   
 
 
   }
@@ -465,26 +470,74 @@ void _showMetaDialog(BuildContext context) {
   );
 }
 
-// Função para exibir o pop-up de Notificações
-void _showNotificacoesDialog(BuildContext context) {
+
+void _showNotificacoesDialog(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  bool isNotificationsEnabled = prefs.getBool('notificationsEnabled') ?? false;
+  final NotificationHelper notificationHelper = NotificationHelper();
+
+  void updateNotifications(bool value) async {
+    prefs.setBool('notificationsEnabled', value);
+    if (value) {
+      await Workmanager().registerPeriodicTask(
+        '1',
+        'simpleTask',
+        frequency: Duration(minutes: 60),
+        initialDelay: Duration(minutes: 60)
+      );
+    } else {
+      await notificationHelper.flutterLocalNotificationsPlugin.cancelAll();
+      await Workmanager().cancelAll();
+    }
+  }
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Notificações", style: TextStyle(fontFamily: AppFonts.primaryFont)),
-        content: Text("Aqui você pode configurar suas notificações." , style: TextStyle(fontFamily: AppFonts.primaryFont)),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Fechar" , style: TextStyle(fontFamily: AppFonts.primaryFont)),
-          ),
-        ],
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(
+              "Notificações",
+              style: TextStyle(fontFamily: AppFonts.primaryFont),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Ativar notificações",
+                  style: TextStyle(fontFamily: AppFonts.primaryFont),
+                ),
+                Switch(
+                  value: isNotificationsEnabled,
+                  onChanged: (value) {
+                    setState(() {
+                      isNotificationsEnabled = value;
+                    });
+                    updateNotifications(value);
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Fechar",
+                  style: TextStyle(fontFamily: AppFonts.primaryFont),
+                ),
+              ),
+            ],
+          );
+        },
       );
     },
   );
 }
+
+
 
 // Função para exibir o pop-up de Definições
 void _showConfiguracoesDialog(BuildContext context) {
@@ -575,3 +628,4 @@ void _showConfirmacaoDialog(BuildContext context, Future<void> funcao) {
     },
   );
 }
+
