@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
 
 
 
@@ -474,20 +473,17 @@ void _showMetaDialog(BuildContext context) {
 void _showNotificacoesDialog(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   bool isNotificationsEnabled = prefs.getBool('notificationsEnabled') ?? false;
-  final NotificationHelper notificationHelper = NotificationHelper();
+  final notificationService = NotificationService();
 
   void updateNotifications(bool value) async {
     prefs.setBool('notificationsEnabled', value);
     if (value) {
-      await Workmanager().registerPeriodicTask(
-        '1',
-        'simpleTask',
-        frequency: Duration(minutes: 60),
-        initialDelay: Duration(minutes: 60)
-      );
+      // To implement
+      await notificationService.scheduleNotificationsIfNeeded();
     } else {
-      await notificationHelper.flutterLocalNotificationsPlugin.cancelAll();
-      await Workmanager().cancelAll();
+      await NotificationService.flutterLocalNotificationsPlugin.cancelAll();
+      
+      
     }
   }
 

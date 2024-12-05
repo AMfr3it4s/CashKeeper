@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 application
-INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:12:5-43:19
+INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:15:5-56:19
 INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\debug\AndroidManifest.xml
 MERGED from [androidx.work:work-runtime:2.8.1] C:\Users\amfre\.gradle\caches\transforms-3\f740e3dfac608bbb652f46ae8ff0e3f2\transformed\work-runtime-2.8.1\AndroidManifest.xml:28:5-143:19
 MERGED from [androidx.work:work-runtime:2.8.1] C:\Users\amfre\.gradle\caches\transforms-3\f740e3dfac608bbb652f46ae8ff0e3f2\transformed\work-runtime-2.8.1\AndroidManifest.xml:28:5-143:19
@@ -25,8 +25,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\am
 	android:name
 		INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml
 manifest
-ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:1:1-55:12
-MERGED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:1:1-55:12
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:1:1-68:12
+MERGED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:1:1-68:12
 INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -119,18 +119,30 @@ MERGED from [androidx.work:work-runtime:2.8.1] C:\Users\amfre\.gradle\caches\tra
 MERGED from [androidx.work:work-runtime:2.8.1] C:\Users\amfre\.gradle\caches\transforms-3\f740e3dfac608bbb652f46ae8ff0e3f2\transformed\work-runtime-2.8.1\AndroidManifest.xml:23:5-68
 	android:name
 		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:9:18-61
-queries
-ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:49:5-54:15
-intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
-ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:50:9-53:18
-action#android.intent.action.PROCESS_TEXT
-ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:51:13-72
+uses-permission#android.permission.SCHEDULE_EXACT_ALARM
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:10:1-75
 	android:name
-		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:51:21-70
+		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:10:18-72
+uses-permission#android.permission.USE_EXACT_ALARM
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:11:1-70
+	android:name
+		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:11:18-67
+uses-permission#android.permission.USE_FULL_SCREEN_INTENT
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:12:1-77
+	android:name
+		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:12:18-74
+queries
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:62:5-67:15
+intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:63:9-66:18
+action#android.intent.action.PROCESS_TEXT
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:64:13-72
+	android:name
+		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:64:21-70
 data
-ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:52:13-50
+ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:65:13-50
 	android:mimeType
-		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:52:19-48
+		ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\main\AndroidManifest.xml:65:19-48
 uses-permission#android.permission.INTERNET
 ADDED from C:\Users\amfre\Documents\Software\Unity\CashKeeper\android\app\src\debug\AndroidManifest.xml:6:5-66
 	android:name
