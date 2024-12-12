@@ -1,38 +1,82 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:cashkeeper/utils/databasehelper.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-class NotificationHelper {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+class NotificationService {
+  //Initialize Instance and BD
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final DatabaseHelper databaseHelper = DatabaseHelper();
 
-  Future<void> initialize() async {
-    // Configurações do Android para as notificações
-    var androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iosInit = DarwinInitializationSettings();
-    var initSettings = InitializationSettings(
-      android: androidInit,
-      iOS: iosInit,
+  static Future<void> onDidReceiveNotificationResponse (NotificationResponse notificationResponse) async {
+
+
+  }
+
+
+  //Initialize Notifications Plugin
+  static Future<void> init() async
+  {
+    //Android Inititialization Settings
+    const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings("@mipmap/launcher_icon");
+
+    //iOS Inititialization Settings
+
+    const DarwinInitializationSettings iOSInitializationSettings = DarwinInitializationSettings();
+
+    //Combine Android and iOS initialization Settings
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: androidInitializationSettings, 
+      iOS: iOSInitializationSettings
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initSettings);
+    //Initialize the plugin with the initialization settings
 
-    // Solicitar permissão para notificações no Android
-    if (Platform.isAndroid) {
-      var status = await Permission.notification.status;
-      if (!status.isGranted) {
-        await Permission.notification.request();
-      }
-    }
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse: onDidReceiveNotificationResponse,
+    );
 
-    // Solicitar permissão para notificações no iOS
-    if (Platform.isIOS) {
-      await Permission.notification.request();
-    }
+    //Request Permission for Notifications for android
+
+    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
   }
+
+ Future<void> scheduleNotificationsIfNeeded() async {
+  final now = DateTime.now();
+
+  // Verifique se os dados de hoje não foram preenchidos
+  if (!(await hasTodayRecord())) {
+    final scheduledDate = DateTime(now.year, now.month, now.day, 20); 
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: AndroidNotificationDetails(
+        "daily_reminder",
+        "Daily Reminder",
+        channelDescription: "Notificação para lembrar de preencher os dados do dia.",
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
+
+    // Agende a notificação para as 20h
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Lembrete diário',
+      'Ainda não preencheu os dados de hoje!',
+      tz.TZDateTime.from(scheduledDate, tz.local),
+      platformChannelSpecifics,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.exact,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+}
+
+
 
   Future<bool> hasTodayRecord() async {
   final db = await databaseHelper.getDatabase();
@@ -47,27 +91,5 @@ class NotificationHelper {
   return records.isNotEmpty;
 }
 
-
-  Future <void> scheduleNotification() async {
-    final now = DateTime.now();
-    if (now.hour >= 18 && !(await hasTodayRecord())) {
-      var androidDetails = AndroidNotificationDetails(
-        'daily_reminder',
-        'Daily Reminder',
-        channelDescription: 'Notificação para lembrar de preencher os dados do dia.',
-        importance: Importance.high,
-        priority: Priority.high,
-      );
-      var iosDetails = DarwinNotificationDetails();
-      var generalDetails = NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Lembrete diário',
-        'Ainda não preencheu os dados de hoje!',
-        generalDetails,
-      );
-    }
-  }
 
 }
