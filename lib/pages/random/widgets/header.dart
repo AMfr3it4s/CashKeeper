@@ -8,11 +8,11 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 90,
+      height: 128,
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 46.0),
             child: Column(
               children: [
                 Row(

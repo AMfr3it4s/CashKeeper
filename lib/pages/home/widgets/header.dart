@@ -227,8 +227,8 @@ class _AppHeaderState extends State<AppHeader> {
           // Tab lateral slide
           AnimatedPositioned(
             duration: Duration(milliseconds: 300), 
-            right: _isTabOpen ? 0 : -MediaQuery.of(context).size.width / 2.5, 
-            top: 0,
+            right: _isTabOpen ? 0 : -MediaQuery.of(context).size.width / 2.8, 
+            top: 50,
             bottom: 0,
             child: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -236,7 +236,7 @@ class _AppHeaderState extends State<AppHeader> {
                 bottomLeft: Radius.circular(20),
               ),
               child: Container(
-                width: MediaQuery.of(context).size.width / 2.5, 
+                width: MediaQuery.of(context).size.width / 2.8, 
                 color: AppColors.primaryColor,
                 child: Column(
                   children: [

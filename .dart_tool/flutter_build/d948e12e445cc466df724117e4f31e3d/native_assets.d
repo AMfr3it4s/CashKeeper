@@ -1,0 +1,1 @@
+ /Users/vaninarodrigues/Documents/Universidade/2MDJD/Git/CashKeeper/.dart_tool/flutter_build/d948e12e445cc466df724117e4f31e3d/native_assets.yaml: 
